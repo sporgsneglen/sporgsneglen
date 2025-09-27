@@ -32,9 +32,9 @@
     }
 
     .dice {
-      font-size: 5rem;
+      font-size: 3rem;
       display: block;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     /* Snegl stort billede */
@@ -84,7 +84,7 @@
         font-size: 1.5rem;
       }
       .dice {
-        font-size: 3rem;
+        font-size: 2rem;
       }
     }
   </style>
@@ -105,7 +105,7 @@
   <div id="result"></div>
 
   <script>
-    const diceFaces = ["JA", "NEJ", "MÅSKE", "JA", "NEJ", "🐌"];
+    const diceFaces = ["JA", "NEJ", "MÅSKE"];
     const input = document.getElementById("questionInput");
     const result = document.getElementById("result");
     const sneglContainer = document.getElementById("sneglContainer");
@@ -114,15 +114,16 @@
       if (event.key === "Enter" && input.value.trim() !== "") {
         // Tilføj shake animation til sneglen
         sneglContainer.classList.add("shake");
-
-        // Fjern animationen efter 0.5s
         setTimeout(() => {
           sneglContainer.classList.remove("shake");
         }, 500);
 
         // Vælg tilfældigt svar
         const random = Math.floor(Math.random() * diceFaces.length);
-        result.innerHTML = "Terningen siger: <span class='dice'>" + diceFaces[random] + "</span>";
+        const answer = diceFaces[random];
+
+        // Vis svaret som "Sneglen siger ..."
+        result.innerHTML = "<span class='dice'>Sneglen siger " + answer + "</span>";
 
         // Ryd inputfelt
         input.value = "";
