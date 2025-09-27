@@ -25,38 +25,111 @@
       border-radius: 10px;
       cursor: pointer;
       transition: transform 0.2s ease;
+      position: relative;
     }
 
     button:hover {
       transform: scale(1.1);
     }
 
+    .shake {
+      animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+      0% { transform: translate(0px, 0px) rotate(0deg); }
+      20% { transform: translate(-5px, 0px) rotate(-10deg); }
+      40% { transform: translate(5px, 0px) rotate(10deg); }
+      60% { transform: translate(-5px, 0px) rotate(-10deg); }
+      80% { transform: translate(5px, 0px) rotate(10deg); }
+      100% { transform: translate(0px, 0px) rotate(0deg); }
+    }
+
     #result {
       margin-top: 40px;
       font-size: 2rem;
       font-weight: bold;
+      position: relative;
+      display: inline-block;
     }
 
-    .dice {
-      font-size: 5rem;
+    .speech-bubble {
+      position: absolute;
+      top: -70px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      padding: 10px 15px;
+      border-radius: 10px;
+      border: 2px solid #333;
+      font-size: 1.2rem;
+      min-width: 80px;
+    }
+
+    .speech-bubble::after {
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 10px;
+      border-style: solid;
+      border-color: white transparent transparent transparent;
+    }
+
+    #snail-img {
+      width: 120px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      button {
+        padding: 15px 30px;
+        font-size: 1.2rem;
+      }
+      #snail-img {
+        width: 80px;
+      }
+      .speech-bubble {
+        font-size: 1rem;
+        top: -60px;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Spørg Sneglen 🐌</h1>
   <p>Tænk på et JA/NEJ-spørgsmål – og tryk på knappen!</p>
-  <button onclick="rollDice()">Tryk her</button>
+  <button id="rollButton" onclick="rollDice()">Tryk her</button>
 
-  <div id="result"></div>
+  <div id="result">
+    <img id="snail-img" src="e2d36ae4-4c59-4d71-b3bb-1068e98db2b2.png" alt="Sneglen">
+    <div class="speech-bubble" id="bubble" style="display:none;">...</div>
+  </div>
 
   <script>
     function rollDice() {
-      const diceFaces = [
-        "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "🐌"
-      ];
-      const random = Math.floor(Math.random() * diceFaces.length);
-      document.getElementById("result").innerHTML = 
-        "Terningen siger: <span class='dice'>" + diceFaces[random] + "</span>";
+      const diceFaces = ["JA", "NEJ", "MÅSKE", "JA", "NEJ", "🐌"];
+      const button = document.getElementById("rollButton");
+      const bubble = document.getElementById("bubble");
+
+      // Tilføj ryst animation
+      button.classList.add("shake");
+      bubble.style.display = "none";
+
+      setTimeout(() => {
+        button.classList.remove("shake");
+
+        const random = Math.floor(Math.random() * diceFaces.length);
+        let answer = diceFaces[random];
+
+        // Hvis snegl, vis taleboble med sjov tekst
+        if(answer === "🐌") answer = "Sneglen ved det! 🐌";
+
+        bubble.innerText = answer;
+        bubble.style.display = "block";
+
+      }, 500);
     }
   </script>
 </body>
